@@ -1,4 +1,5 @@
 import requests
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,11 +10,11 @@ GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
 
 # TODO: Import cities and country codes from json file
 cities = [
-    "New York City", "London", "Tokyo", "Sydney", "Berlin"
+    "New York City,US", "London,GB", "Tokyo,JP", "Sydney,AU", "Berlin,DE"
 ]
 
 def get_city_coordinates(city_name, api_key):
-    """Fetches the latitude and longitude of a city."""
+    """GET the latitude and longitude of a city."""
     params = {
         "q": city_name,
         "appid": api_key,
@@ -28,7 +29,7 @@ def get_city_coordinates(city_name, api_key):
         return None, None
 
 def get_weather(lat, lon, api_key):
-    """Fetches the current weather data using latitude and longitude."""
+    """GET the current weather data using latitude and longitude."""
     params = {
         "lat": lat,
         "lon": lon,
