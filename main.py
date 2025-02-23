@@ -9,7 +9,6 @@ API_KEY = os.getenv("OPENWEATHER_API_KEY")
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
 
-# TODO: Import cities and country codes from json file
 locations = json.load(open('cities.json'))
 
 def get_city_coordinates(location_name, api_key):
