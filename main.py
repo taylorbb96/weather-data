@@ -1,6 +1,7 @@
-import requests
-import os
 from dotenv import load_dotenv
+import os
+import json
+import requests
 
 load_dotenv()
 
@@ -9,14 +10,12 @@ BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
 
 # TODO: Import cities and country codes from json file
-cities = [
-    "New York City,US", "London,GB", "Tokyo,JP", "Sydney,AU", "Berlin,DE"
-]
+locations = json.load(open('cities.json'))
 
-def get_city_coordinates(city_name, api_key):
+def get_city_coordinates(location_name, api_key):
     """GET the latitude and longitude of a city."""
     params = {
-        "q": city_name,
+        "q": location_name,
         "appid": api_key,
         "limit": 1
     }
@@ -25,7 +24,7 @@ def get_city_coordinates(city_name, api_key):
     if data:
         return data[0]['lat'], data[0]['lon']
     else:
-        print(f"Could not find coordinates for {city_name}")
+        print(f"Could not find coordinates for {location_name}")
         return None, None
 
 def get_weather(lat, lon, api_key):
@@ -40,11 +39,13 @@ def get_weather(lat, lon, api_key):
     return response.json()
 
 def main():
-    for city in cities:
-        lat, lon = get_city_coordinates(city, API_KEY)
+    for location in locations:
+        location_name = f"{location['city']},{location['country']}"
+
+        lat, lon = get_city_coordinates(location_name, API_KEY)
         if lat is not None and lon is not None:
             weather_data = get_weather(lat, lon, API_KEY)
-            print(f"Weather in {city[:-3]}: {weather_data['weather'][0]['description']}, "
+            print(f"Weather in {location_name[:-3]}: {weather_data['weather'][0]['description']}, "
                   f"Temperature: {weather_data['main']['temp']}°C")
 
 if __name__ == "__main__":
