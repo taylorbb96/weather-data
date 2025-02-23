@@ -3,12 +3,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Your OpenWeather API Key
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
 
-# List of cities
 # TODO: Import cities and country codes from json file
 cities = [
     "New York City", "London", "Tokyo", "Sydney", "Berlin"
@@ -19,7 +17,7 @@ def get_city_coordinates(city_name, api_key):
     params = {
         "q": city_name,
         "appid": api_key,
-        "limit": 1  # Get only the first result
+        "limit": 1
     }
     response = requests.get(GEOCODE_URL, params=params)
     data = response.json()
@@ -35,7 +33,7 @@ def get_weather(lat, lon, api_key):
         "lat": lat,
         "lon": lon,
         "appid": api_key,
-        "units": "metric"  # Get temperature in Celsius
+        "units": "metric"
     }
     response = requests.get(BASE_URL, params=params)
     return response.json()
