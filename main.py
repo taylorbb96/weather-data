@@ -44,7 +44,7 @@ def main():
         lat, lon = get_city_coordinates(city, API_KEY)
         if lat is not None and lon is not None:
             weather_data = get_weather(lat, lon, API_KEY)
-            print(f"Weather in {city}: {weather_data['weather'][0]['description']}, "
+            print(f"Weather in {city[:3]}: {weather_data['weather'][0]['description']}, "
                   f"Temperature: {weather_data['main']['temp']}°C")
 
 if __name__ == "__main__":
