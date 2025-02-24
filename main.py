@@ -38,14 +38,19 @@ def get_weather(lat, lon, api_key):
     return response.json()
 
 def main():
-    for location in locations:
-        location_name = f"{location['city']},{location['country']}"
+    results = []
 
-        lat, lon = get_city_coordinates(location_name, API_KEY)
-        if lat is not None and lon is not None:
-            weather_data = get_weather(lat, lon, API_KEY)
-            print(f"Weather in {location_name[:-3]}: {weather_data['weather'][0]['description']}, "
-                  f"Temperature: {weather_data['main']['temp']}°C")
+    with open('results.json', 'w', encoding='utf-8') as output_file:
+        for location in locations:
+            location_name = f"{location['city']},{location['country']}"
+
+            lat, lon = get_city_coordinates(location_name, API_KEY)
+
+            if lat is not None and lon is not None:
+                weather_data = get_weather(lat, lon, API_KEY)
+                results.append(weather_data)
+
+        json.dump(results, output_file)
 
 if __name__ == "__main__":
     main()
