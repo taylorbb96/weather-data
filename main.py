@@ -5,8 +5,11 @@ import requests
 
 load_dotenv()
 
-API_KEY = os.getenv("OPENWEATHER_API_KEY")
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
+# TODO: Validate this works, key is being activated
+# Also test non-overview endpoint
+GEOCODE_API_KEY = os.getenv("OPENWEATHER_GEOCODE_API_KEY")
+ONE_CALL_API_KEY = os.getenv("OPENWEATHER_ONE_CALL_API_KEY")
+BASE_URL = "https://api.openweathermap.org/data/3.0/onecall/overview"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
 
 locations = json.load(open('cities.json'))
@@ -44,10 +47,10 @@ def main():
         for location in locations:
             location_name = f"{location['city']},{location['country']}"
 
-            lat, lon = get_city_coordinates(location_name, API_KEY)
+            lat, lon = get_city_coordinates(location_name, GEOCODE_API_KEY)
 
             if lat is not None and lon is not None:
-                weather_data = get_weather(lat, lon, API_KEY)
+                weather_data = get_weather(lat, lon, ONE_CALL_API_KEY)
                 results.append(weather_data)
 
         json.dump(results, output_file)
