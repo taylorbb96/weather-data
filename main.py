@@ -52,6 +52,8 @@ def main():
 
             if lat is not None and lon is not None:
                 weather_data = get_weather(lat, lon, ONE_CALL_API_KEY)
+                weather_data['name'] = location['city']
+                weather_data['country'] = location['country']
                 results.append(weather_data)
 
         json.dump(results, output_file)
