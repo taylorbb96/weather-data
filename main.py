@@ -9,7 +9,7 @@ load_dotenv()
 # Also test non-overview endpoint
 GEOCODE_API_KEY = os.getenv("OPENWEATHER_GEOCODE_API_KEY")
 ONE_CALL_API_KEY = os.getenv("OPENWEATHER_ONE_CALL_API_KEY")
-BASE_URL = "https://api.openweathermap.org/data/3.0/onecall/overview"
+BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
 
 locations = json.load(open('cities.json'))
