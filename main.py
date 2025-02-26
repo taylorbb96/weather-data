@@ -5,12 +5,12 @@ import requests
 
 load_dotenv()
 
-# TODO: Validate this works, key is being activated
-# Also test non-overview endpoint
 GEOCODE_API_KEY = os.getenv("OPENWEATHER_GEOCODE_API_KEY")
 ONE_CALL_API_KEY = os.getenv("OPENWEATHER_ONE_CALL_API_KEY")
 BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
+# Only need current data here, not forecast
+EXCLUDED_FIELDS = "minutely,hourly,daily"
 
 locations = json.load(open('cities.json'))
 
@@ -35,6 +35,7 @@ def get_weather(lat, lon, api_key):
         "lat": lat,
         "lon": lon,
         "appid": api_key,
+        "exclude": EXCLUDED_FIELDS,
         "units": "metric"
     }
     response = requests.get(BASE_URL, params=params)
