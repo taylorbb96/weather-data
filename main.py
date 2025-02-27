@@ -9,25 +9,23 @@ GEOCODE_API_KEY = os.getenv("OPENWEATHER_GEOCODE_API_KEY")
 ONE_CALL_API_KEY = os.getenv("OPENWEATHER_ONE_CALL_API_KEY")
 BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
 GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
-# Only need current data here, not forecast
-EXCLUDED_FIELDS = "minutely,hourly,daily"
+EXCLUDED_FIELDS = "minutely,hourly,daily"  # Only need current data here, not forecast
 
-locations = json.load(open('cities.json'))
+
+locations = json.load(open("cities.json"))
+
 
 def get_city_coordinates(location_name, api_key):
     """GET the latitude and longitude of a city."""
-    params = {
-        "q": location_name,
-        "appid": api_key,
-        "limit": 1
-    }
+    params = {"q": location_name, "appid": api_key, "limit": 1}
     response = requests.get(GEOCODE_URL, params=params)
     data = response.json()
     if data:
-        return data[0]['lat'], data[0]['lon']
+        return data[0]["lat"], data[0]["lon"]
     else:
         print(f"Could not find coordinates for {location_name}")
         return None, None
+
 
 def get_weather(lat, lon, api_key):
     """GET the current weather data using latitude and longitude."""
@@ -36,15 +34,16 @@ def get_weather(lat, lon, api_key):
         "lon": lon,
         "appid": api_key,
         "exclude": EXCLUDED_FIELDS,
-        "units": "metric"
+        "units": "metric",
     }
     response = requests.get(BASE_URL, params=params)
     return response.json()
 
+
 def main():
     results = []
 
-    with open('results.json', 'w', encoding='utf-8') as output_file:
+    with open("results.json", "w", encoding="utf-8") as output_file:
         for location in locations:
             location_name = f"{location['city']},{location['country']}"
 
@@ -52,12 +51,12 @@ def main():
 
             if lat is not None and lon is not None:
                 weather_data = get_weather(lat, lon, ONE_CALL_API_KEY)
-                weather_data['name'] = location['city']
-                weather_data['country'] = location['country']
+                weather_data["name"] = location["city"]
+                weather_data["country"] = location["country"]
                 results.append(weather_data)
 
         json.dump(results, output_file)
 
+
 if __name__ == "__main__":
     main()
-
