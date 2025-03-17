@@ -16,7 +16,7 @@ locations = json.load(open("cities.json"))
 
 
 def get_city_coordinates(location_name, api_key):
-    """GET the latitude and longitude of a city."""
+    # GET the latitude and longitude of a city.
     params = {"q": location_name, "appid": api_key, "limit": 1}
     response = requests.get(GEOCODE_URL, params=params)
     data = response.json()
@@ -28,7 +28,7 @@ def get_city_coordinates(location_name, api_key):
 
 
 def get_weather(lat, lon, api_key):
-    """GET the current weather data using latitude and longitude."""
+    # GET the current weather data using latitude and longitude.
     params = {
         "lat": lat,
         "lon": lon,
